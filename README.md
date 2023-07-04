@@ -16,9 +16,13 @@ The starter kit provides the perfect starting point for your next project.
 
 `npm install`
 
-- Migrate the database
+- Migrate the database (from AdonisJS root)
 
 `node ace migration:run`
+
+- Run the servers
+  `node ace serve --watch` from AdonisJS root `/`
+  `npm run dev` from Vue.js root `/client`
 
 # Screenshots
 
