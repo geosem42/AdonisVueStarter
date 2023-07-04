@@ -2,16 +2,6 @@ import { defineStore } from 'pinia';
 import axios from 'axios';
 import { getErrorMessage } from './helpers/errorHelpers';
 
-// const getCookie = (name: string): string | null => {
-// 	const value = `; ${document.cookie}`;
-// 	const parts = value.split(`; ${name}=`);
-// 	if (parts.length >= 2) {
-// 		const cookieValue = parts.pop()?.split(';').shift();
-// 		return cookieValue ? cookieValue : null;
-// 	}
-// 	return null;
-// };
-
 interface User {
 	id: number;
 	name?: string;

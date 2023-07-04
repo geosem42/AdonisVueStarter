@@ -26,12 +26,3 @@ const store = useStore();
 store.checkAuthentication().then(() => {
   app.mount('#app');
 });
-
-// axios.interceptors.request.use(config => {
-//   if (store.token) {
-//     config.headers['Authorization'] = 'Bearer ' + store.token
-//   }
-//   return config;
-// }, error => {
-//   return Promise.reject(error);
-// });
