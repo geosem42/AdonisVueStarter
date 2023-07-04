@@ -1,0 +1,144 @@
+// Variables
+//
+// Variables should follow the `$component-state-property-size` formula for
+// consistent naming. Ex: $nav-link-disabled-color and $modal-content-box-shadow-xs.
+
+@import url('https://fonts.googleapis.com/css2?family=Public+Sans:wght@100;200;300;400;500;600;700;800&display=swap');
+
+// Color system
+
+// scss-docs-start gray-color-variables
+$white:    #fff !default;
+$gray-100: #f8f9fa !default;
+$gray-200: #e9ecef !default;
+$gray-300: #dee2e6 !default;
+$gray-400: #ced4da !default;
+$gray-500: #adb5bd !default;
+$gray-600: #8592a3 !default;
+$gray-700: #495057 !default;
+$gray-800: #343a40 !default;
+$gray-900: #233446 !default;
+$black:    #000 !default;
+// scss-docs-end gray-color-variables
+
+// scss-docs-start color-variables
+$blue:    #0d6efd !default;
+$indigo:  #6610f2 !default;
+$purple:  #696cff !default;
+$pink:    #d63384 !default;
+$red:     #ff3e1d !default;
+$orange:  #fd7e14 !default;
+$yellow:  #ffab00 !default;
+$green:   #71dd37 !default;
+$teal:    #20c997 !default;
+$cyan:    #03c3ec !default;
+// scss-docs-end color-variables
+
+// scss-docs-start colors-map
+$colors: (
+  "blue":       $blue,
+  "indigo":     $indigo,
+  "purple":     $purple,
+  "pink":       $pink,
+  "red":        $red,
+  "orange":     $orange,
+  "yellow":     $yellow,
+  "green":      $green,
+  "teal":       $teal,
+  "cyan":       $cyan,
+  "black":      $black,
+  "white":      $white,
+  "gray":       $gray-600,
+  "gray-dark":  $gray-800
+) !default;
+// scss-docs-end colors-map
+
+// scss-docs-start theme-color-variables
+$primary:       $purple !default;
+$secondary:     $gray-600 !default;
+$success:       $green !default;
+$info:          $cyan !default;
+$warning:       $yellow !default;
+$danger:        $red !default;
+$light:         $gray-100 !default;
+$dark:          $gray-900 !default;
+$primary-label: #e7e7ff !default;
+$secondary-label: #ebeef0;
+$success-label: #e8fadf;
+$info-label: #d7f5fc;
+$warning-label: #fff2d6;
+$danger-label: #ffe0db;
+$dark-label: #dcdfe1;
+// scss-docs-end theme-color-variables
+
+// scss-docs-start theme-colors-map
+$theme-colors: (
+  "primary":    $primary,
+  "secondary":  $secondary,
+  "success":    $success,
+  "info":       $info,
+  "warning":    $warning,
+  "danger":     $danger,
+  "light":      $light,
+  "dark":       $dark
+) !default;
+// scss-docs-end theme-colors-map
+
+$font-family-sans-serif:      "Public Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif !default;
+$font-family-monospace:       SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !default;
+
+// Custom label names and colors
+$custom-labels: (
+  "primary": (
+    background: $primary-label,
+    text-color: $primary,
+    hover-background: $primary,
+    hover-text-color: $white
+  ),
+  "secondary": (
+    background: $secondary-label,
+    text-color: $secondary,
+    hover-background: $secondary,
+    hover-text-color: $white
+  ),
+  "success": (
+    background: $success-label,
+    text-color: $success,
+    hover-background: $success,
+    hover-text-color: $white
+  ),
+  "info": (
+    background: $info-label,
+    text-color: $info,
+    hover-background: $info,
+    hover-text-color: $white
+  ),
+  "warning": (
+    background: $warning-label,
+    text-color: $warning,
+    hover-background: $warning,
+    hover-text-color: $white
+  ),
+  "danger": (
+    background: $danger-label,
+    text-color: $danger,
+    hover-background: $danger,
+    hover-text-color: $white
+  ),
+  "dark": (
+    background: $dark-label,
+    text-color: $dark,
+    hover-background: $dark,
+    hover-text-color: $white
+  ),
+);
+
+$alert-border-width: 0;
+$input-focus-border-color: $primary;
+$input-focus-box-shadow: none;
+
+$card-border-width: 0 !default;
+$card-border-radius: 0.375rem !default;
+$card-cap-bg: $white !default;
+$card-cap-color: #566a7f !default;
+$card-cap-padding-y: 20px !default;

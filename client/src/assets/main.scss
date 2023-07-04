@@ -1,0 +1,73 @@
+// Import custom variables
+@import "variables";
+
+// Import Bootstrap’s functions first
+@import "../../node_modules/bootstrap/scss/functions";
+
+// Import the rest of Bootstrap's SASS files
+@import "../../node_modules/bootstrap/scss/bootstrap";
+
+@import "boxicons";
+
+@each $color, $value in $theme-colors {
+  .btn-#{$color} {
+    color: $white !important;
+    box-shadow: 0 0.125rem 0.25rem 0 rgba(35,52,70,.4);
+  }
+  .btn-#{$color}:hover {
+    color: $white !important;
+    background-color: shade-color($value, 20%) !important;
+    border: 1px solid shade-color($value, 20%) !important;
+    box-shadow: 0 0.125rem 0.25rem 0 rgba(35,52,70,.4);
+  }
+  .btn-outline-#{$color}:hover {
+    color: $white !important;
+  }
+}
+
+@mixin label-button-variant($background, $text-color, $hover-background, $hover-text-color, $label-name) {
+  .btn-label-#{$label-name} {
+    @include button-variant($background, $background, $hover-background, $hover-background, $hover-background, $hover-background, $text-color, $text-color);
+
+    &:hover, &:focus, &:active {
+      color: $hover-text-color !important;
+      box-shadow: 0 0.125rem 0.25rem 0 rgba(59, 59, 59, 0.4) !important;
+    }
+  }
+}
+
+// Loop through the custom labels and generate button styles
+@each $label, $colors in $custom-labels {
+  @include label-button-variant(
+    map-get($colors, background),
+    map-get($colors, text-color),
+    map-get($colors, hover-background),
+    map-get($colors, hover-text-color),
+    $label
+  );
+}
+
+body {
+  background-color: #f5f5f9;
+}
+
+nav {
+  .dropdown-menu.user {
+    border: 0;
+    box-shadow: 0 0.125rem 0.25rem 0 rgba(59, 59, 59, 0.4);
+    top: 43px;
+    right: 0;
+    left: unset !important;
+  }
+  .dropdown-toggle.user {
+    padding: 15px;
+    width: 40px;
+    height: 40px;
+    
+    &::after {
+      content: '';
+      display: none;
+    }
+  }
+
+}
