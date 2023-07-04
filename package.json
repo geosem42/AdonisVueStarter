@@ -26,7 +26,6 @@
     "@adonisjs/lucid": "^18.4.0",
     "@adonisjs/repl": "^3.1.11",
     "@adonisjs/shield": "^7.1.1",
-    "js-cookie": "^3.0.5",
     "luxon": "^3.3.0",
     "mysql2": "^3.4.2",
     "phc-argon2": "^1.1.4",
