@@ -22,9 +22,10 @@ node ace migration:run
 ```
 - Run the servers
 ```
-# From server
+## From adonisjs directory
 node ace serve --watch
-# From client
+
+## From client directory
 npm run dev 
 ```
 # Screenshots
