@@ -9,23 +9,24 @@ The starter kit provides the perfect starting point for your next project.
 
 # Installation
 - Navigate to the root of your project and run
-
-`npm install`
-
+```
+npm install
+```
 - The frontend using Vue.js is located inside the `client` directory. Navigate to `/client` and run
-
-`npm install`
-
+```
+npm install
+```
 - Migrate the database (from AdonisJS root)
-
-`node ace migration:run`
-
+```
+node ace migration:run
+```
 - Run the servers
-  
-`node ace serve --watch` from AdonisJS root `/`
-  
-`npm run dev` from Vue.js root `/client`
-
+```
+# From server
+node ace serve --watch
+# From client
+npm run dev 
+```
 # Screenshots
 
 ![Login](https://i.imgur.com/OC4RDBJ.png)
