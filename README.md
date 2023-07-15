@@ -1,5 +1,9 @@
 # Introduction
-The appliation starter kit features an authentication system; login, register, profile settings.
+The appliation starter kit features the following:
+* Login
+* Register
+* Profile Settings: change name, email, password and delete account
+* Email Verification
 
 It is built using `AdonisJS`, `Vue.js`, `MySQL` with an `api` approach. 
 
