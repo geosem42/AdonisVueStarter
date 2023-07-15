@@ -25,11 +25,8 @@ export const useStore = defineStore({
 		async register({ name, email, password }: { name: string; email: string; password: string }) {
 			try {
 				const response = await axios.post('/api/register', { name, email, password });
-				if (response.data && response.data.user) { // check for user instead of token
-					// this.user = response.data.user;
-					// there's no need to assign token here because you don't have it in the response
-		
-					// Return the message to be displayed on the registration page.
+				if (response.data && response.data.user) {
+
 					return response.data.message;
 				}
 				return false;
@@ -68,7 +65,6 @@ export const useStore = defineStore({
 				const response = await axios.get('/api/auth/isAuthenticated');
 				if (response.data.isAuthenticated) {
 					this.user = response.data.user;
-					// this.token = getCookie('token');
 				}
 			} catch (error) {
 				console.error('Error checking authentication', error);
@@ -84,8 +80,6 @@ export const useStore = defineStore({
 				return { success: true };
 			} catch (error: any) {
 				console.error('Error updating profile', error);
-				// const errorMessage = getErrorMessage(error);
-				// return { success: false, errorMessage };
 				throw error;
 			}
 		},
@@ -116,7 +110,7 @@ export const useStore = defineStore({
 			} catch (error: any) {
 				this.emailVerificationStatus = 'failed';
 				this.verificationMessage = getErrorMessage(error);
-				throw new Error(this.verificationMessage); // Throw the error to be caught in the component
+				throw new Error(this.verificationMessage);
 			}
 		},
 
