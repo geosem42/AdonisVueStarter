@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
 import { getErrorMessage } from './helpers/errorHelpers';
+import { useRouter } from 'vue-router';
 
 interface User {
 	id: number;
@@ -17,15 +18,19 @@ export const useStore = defineStore({
 		isCheckingAuth: true as boolean | null,
 		user: null as User | null,
 		token: null as string | null,
+		emailVerificationStatus: 'pending' as 'pending' | 'success' | 'failed',
+		verificationMessage: '',
 	}),
 	actions: {
 		async register({ name, email, password }: { name: string; email: string; password: string }) {
 			try {
 				const response = await axios.post('/api/register', { name, email, password });
-				if (response.data && response.data.token) {
-					this.token = response.data.token.token;
-					this.user = response.data.user;
-					return true;
+				if (response.data && response.data.user) { // check for user instead of token
+					// this.user = response.data.user;
+					// there's no need to assign token here because you don't have it in the response
+		
+					// Return the message to be displayed on the registration page.
+					return response.data.message;
 				}
 				return false;
 			} catch (error: any) {
@@ -96,7 +101,24 @@ export const useStore = defineStore({
 				const errorMessage = getErrorMessage(error);
 				return { success: false, errorMessage };
 			}
-		}
+		},
+
+		async verifyEmail(token: string) {
+			try {
+				this.emailVerificationStatus = 'pending';
+				const response = await axios.get(`/api/verify?token=${token}`);
+				if (response.data && response.data.message) {
+					this.verificationMessage = response.data.message;
+					this.emailVerificationStatus = 'success';
+					return true;
+				}
+				return false;
+			} catch (error: any) {
+				this.emailVerificationStatus = 'failed';
+				this.verificationMessage = getErrorMessage(error);
+				throw new Error(this.verificationMessage); // Throw the error to be caught in the component
+			}
+		},
 
 	},
 });

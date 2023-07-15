@@ -12,4 +12,5 @@ Route.group(() => {
   Route.get('/auth/isAuthenticated', 'AuthController.isAuthenticated');
   Route.put('/auth/update', 'AuthController.updateProfile').middleware('auth');
   Route.delete('/auth/delete-account', 'AuthController.deleteAccount').middleware('auth');
+  Route.get('/verify', 'AuthController.verifyEmail');
 }).prefix('api')

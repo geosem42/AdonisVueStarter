@@ -1,5 +1,9 @@
 <template>
   <div class="form-signup w-50 m-auto mt-5">
+    <div v-if="registrationMessage" class="alert alert-warning mt-3">
+      {{ registrationMessage }}
+    </div>
+
     <form @submit.prevent="register" class="needs-validation">
 
       <h1 class="h3 mb-3 fw-normal">Register</h1>
@@ -25,7 +29,7 @@
 </template>
 
 <script lang="ts">
-import { reactive } from 'vue';
+import { ref, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from '../../store';
 import { useVuelidate } from '@vuelidate/core';
@@ -36,8 +40,10 @@ export default {
     const state = reactive({
       name: '',
       email: '',
-      password: ''
+      password: '',
     });
+
+    const registrationMessage = ref('');
 
     const rules = {
       name: { required },
@@ -63,14 +69,14 @@ export default {
           password: state.password
         });
         if (success) {
-          router.push("/");
+          registrationMessage.value = success;
         }
       } catch (error) {
         console.log('The error is: ', error)
       }
     };
 
-    return { state, v$, register };
+    return { state, v$, register, registrationMessage };
   }
 }
 </script>

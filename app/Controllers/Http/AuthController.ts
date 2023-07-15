@@ -2,10 +2,12 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from 'App/Models/User'
 import RegisterValidator from 'App/Validators/RegisterUserValidator'
 import UpdateProfileValidator from 'App/Validators/UpdateProfileValidator'
+import crypto from 'crypto'
+import sgMail from '@sendgrid/mail'
 
 export default class AuthController {
 
-  public async register({ request, auth, response }: HttpContextContract) {
+  public async register({ request }: HttpContextContract) {
     // Validate the user input
     const payload = await request.validate(RegisterValidator);
 
@@ -14,33 +16,64 @@ export default class AuthController {
     user.name = payload.name;
     user.email = payload.email;
     user.password = payload.password;
+    user.status = 'inactive';
+    user.emailVerificationToken = crypto.randomBytes(32).toString('hex');
     await user.save();
 
-    const token = await auth.use('api').attempt(payload.email, payload.password);
+    // Send verification email
+    if (!process.env.SENDGRID_API_KEY) {
+      throw new Error('SENDGRID_API_KEY is not defined in the environment');
+    }
 
-    response.cookie('token', token.toJSON().token, {
-      httpOnly: true,
-      maxAge: 7200,
-      path: '/'
-    });
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    const msg = {
+      to: user.email,
+      from: process.env.SENDFROM_EMAIL || '',
+      subject: 'Verify your email address',
+      text: `Click the link to verify your email address: ${process.env.APP_URL}/verify?token=${user.emailVerificationToken}`,
+      html: `<p>Click the link to verify your email address: <a href="${process.env.APP_URL}/verify?token=${user.emailVerificationToken}">${process.env.APP_URL}/verify?token=${user.emailVerificationToken}</a></p>`,
+    };
+    await sgMail.send(msg);
 
-    return { token: token.toJSON(), user: user };
+
+    // const token = await auth.use('api').attempt(payload.email, payload.password);
+
+    // response.cookie('token', token.toJSON().token, {
+    //   httpOnly: true,
+    //   maxAge: 7200,
+    //   path: '/'
+    // });
+
+    return { message: 'Registration successful. Please verify your email before logging in.', user: user };
   }
 
   public async login({ request, auth, response }: HttpContextContract) {
     const email = request.input('email');
     const password = request.input('password');
-    const token = await auth.use('api').attempt(email, password);
 
-    response.cookie('token', token.toJSON().token, {
-      httpOnly: true,
-      maxAge: 7200,
-      path: '/'
-    });
+    const user = await User.findBy('email', email);
 
-    const user = auth.user;
+    if (!user) {
+      return response.unauthorized({ message: 'Invalid email address.' });
+    }
 
-    return { token: token.toJSON(), user };
+    if (user.status !== 'active') {
+      return response.unauthorized({ message: 'Account not active.' });
+    }
+
+    try {
+      const token = await auth.use('api').attempt(email, password);
+
+      response.cookie('token', token.toJSON().token, {
+        httpOnly: true,
+        maxAge: 7200,
+        path: '/'
+      });
+
+      return { token: token.toJSON(), user };
+    } catch {
+      return response.unauthorized({ message: 'Invalid password.' });
+    }
   }
 
   public async logout({ auth, response }: HttpContextContract) {
@@ -126,5 +159,25 @@ export default class AuthController {
       // Return error response
       return response.internalServerError({ message: error.message });
     }
+  }
+
+  public async verifyEmail({ request, response }: HttpContextContract) {
+    const token = request.input('token');
+    if (!token) {
+      return response.badRequest({ message: 'Missing verification token' });
+    }
+    
+    const user = await User.findBy('email_verification_token', token);
+    if (!user) {
+      return response.badRequest({ message: 'Invalid verification token' });
+    }
+  
+    // Set the user status to active and clear the verification token
+    user.status = 'active';
+    user.emailVerificationToken = null;
+    await user.save();
+  
+    return response.ok({ message: 'Email address verified successfully' });
+    //response.redirect(`${process.env.APP_URL}/login?message=Email+address+verified+successfully`);
   }
 }

@@ -10,10 +10,15 @@ export function getErrorMessage(error: any): string {
   };
 
   // Check if error is from axios and extract server message
-  if (error && error.response && error.response.data && error.response.data.errors) {
-    const serverMessage = error.response.data.errors[0].message;
+  if (error && error.response && error.response.data && error.response.data.message) {
+    const serverMessage = error.response.data.message;
     const errorCode = serverMessage.split(':')[0]; // Extract the error code before the colon
-    return errorMessages[errorCode] || "An unknown error occurred";
+    if (errorMessages[errorCode]) {
+      return errorMessages[errorCode];
+    } else {
+      // If there is no matching error code, return the server message itself
+      return serverMessage;
+    }
   }
 
   // default error message

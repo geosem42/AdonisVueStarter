@@ -4,6 +4,9 @@
       <div v-if="errorMessage" class="alert alert-danger" role="alert">
         {{ errorMessage }}
       </div>
+      <div v-if="verificationMessage" class="alert alert-success" role="alert">
+        {{ verificationMessage }}
+      </div>
 
       <h1 class="h3 mb-3 fw-normal">Login</h1>
 
@@ -24,7 +27,7 @@
 
 
 <script lang="ts">
-import { reactive, ref } from 'vue';
+import { reactive, ref, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from '../../store';
 import { useVuelidate } from '@vuelidate/core';
@@ -32,6 +35,11 @@ import { required, email } from '@vuelidate/validators';
 
 export default {
   setup() {
+
+    onUnmounted(() => {
+      store.verificationMessage = null;
+    });
+
     const state = reactive({
       email: '',
       password: ''
@@ -46,6 +54,12 @@ export default {
     const store = useStore();
     const router = useRouter();
     const errorMessage = ref(null);
+    const verificationMessage = ref(null);
+
+    // If there's a verification message in the store, display it
+    if (store.verificationMessage) {
+      verificationMessage.value = store.verificationMessage;
+    }
 
     const login = async () => {
       v$.value.$touch();
@@ -63,7 +77,7 @@ export default {
       }
     };
 
-    return { state, v$, login, errorMessage };
+    return { state, v$, login, errorMessage, verificationMessage };
   }
 }
 </script>

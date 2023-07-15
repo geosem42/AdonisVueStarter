@@ -16,6 +16,12 @@ const router = createRouter({
         requiresAuth: true
       } 
     },
+    { 
+      path: '/verify', 
+      name: 'verify', 
+      component: () => import('../components/Auth/Verify.vue'),
+      props: (route) => ({ token: route.query.token })
+    },
   ]
 })
 
